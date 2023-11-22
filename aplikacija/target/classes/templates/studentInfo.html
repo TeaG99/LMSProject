@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Grades</title>
+    <style>
+        /* Center the content and make it full-page */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; /* Set background color */
+        }
+
+        /* Style the container */
+        .container {
+            text-align: center;
+        }
+
+        /* Style the grades table */
+        table {
+            margin: 20px auto; /* Center the table horizontally */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff; /* Set background color */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        /* Style table headers */
+        table th {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        /* Style table cells */
+        table td {
+            padding: 10px;
+        }
+
+        /* Style the footer */
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+        .back-button {
+            margin-top: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Student Grades</h1>
+
+    <input type="text" id="searchInput" placeholder="Search for a student...">
+
+    <table>
+        <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Last Name</th>
+            <th>Points</th>
+            <th>Grade</th>
+        </tr>
+        </thead>
+        <tbody id="gradeTableBody">
+        <tr th:each="attempt : ${examAttempts}">
+            <td th:text="${attempt.student.name}"></td>
+            <td th:text="${attempt.student.lastName}"></td>
+            <td th:text="${attempt.points}"></td>
+            <td th:text="${attempt.grade}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="http://localhost:8080/professor/login" class="back-button">Back</a>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2023 University. All rights reserved.</p>
+</footer>
+
+<script>
+    // JavaScript for search functionality
+    const searchInput = document.getElementById('searchInput');
+    const gradeTableBody = document.getElementById('gradeTableBody');
+
+    // Function to perform the search
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = gradeTableBody.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const studentName = rows[i].getElementsByTagName('td')[0];
+            const lastName = rows[i].getElementsByTagName('td')[1];
+
+            if (studentName || lastName) {
+                const name = studentName.textContent.toLowerCase();
+                const last = lastName.textContent.toLowerCase();
+                if (name.includes(searchTerm) || last.includes(searchTerm)) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    }
+
+    // Event listener for input changes
+    searchInput.addEventListener('input', performSearch);
+</script>
+</body>
+</html>

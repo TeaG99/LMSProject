@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>University Homepage</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Use min-height instead of height */
+            margin: 0;
+            position: relative; /* Add this to establish a positioning context */
+        }
+
+        .container {
+            text-align: center;
+            flex-grow: 1; /* Allow the container to grow to fill the available space */
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        footer {
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%; /* Make the footer full width */
+            position: absolute;
+            bottom: 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Welcome to Our University</h1>
+    </header>
+
+    <section id="student-login">
+        <h2>Student Login</h2>
+        <form th:action="@{/student/login}" th:object="${student}" method="post">
+            <label for="student-email">Email:</label>
+            <input type="text" id="student-email" name="email" required th:field="*{email}">
+
+            <label for="student-password">Password:</label>
+            <input type="password" id="student-password" name="password" required th:field="*{password}">
+
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section id="professor-login">
+        <h2>Professor Login</h2>
+        <form th:action="@{/professor/login}" th:object="${professor}" method="post">
+            <label for="professor-email">Email:</label>
+            <input type="text" id="professor-email" name="email" required th:field="*{email}">
+
+            <label for="professor-password">Password:</label>
+            <input type="password" id="professor-password" name="password" required th:field="*{password}">
+
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section id="university-info">
+        <h2>About Our University</h2>
+        <p>Our university is dedicated to providing high-quality education and research opportunities to students and faculty.</p>
+    </section>
+</div>
+
+
+<footer>
+    <p>&copy; 2023 University. All rights reserved.</p>
+</footer>
+</body>
+</html>

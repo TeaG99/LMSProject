@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Professor's Dashboard</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Use min-height instead of height */
+            margin: 0;
+            position: relative; /* Add this to establish a positioning context */
+        }
+
+        .container {
+            text-align: center;
+            flex-grow: 1; /* Allow the container to grow to fill the available space */
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        footer {
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%; /* Make the footer full width */
+            position: absolute;
+            bottom: 0;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #555;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h2>Welcome, Professor!</h2>
+    </header>
+    <section id="view-students">
+        <h3>View All Students and Their Grades</h3>
+        <form th:action="@{studentInfo}" method="post">
+            <button type="submit">View Students and Grades</button>
+        </form>
+    </section>
+    <section id="add-question">
+        <h3>Add Questions to Exam</h3>
+        <form th:action="@{questionAdd}" method="get">
+            <button type="submit">Add Question to Exam</button>
+        </form>
+    </section>
+    <section id="add-student">
+        <h3>Add Student</h3>
+        <form th:action="@{/addStudent}" method="get">
+            <button type="submit">Add Student</button>
+        </form>
+    </section>
+    <section id="add-exam">
+        <h3>Add Exam</h3>
+        <form th:action="@{/addExam}" method="get">
+            <button type="submit">Add Exam</button>
+        </form>
+    </section>
+    <a href="http://localhost:8080/home" class="back-button">Back</a>
+</div>
+</body>
+<footer>
+    <p>&copy; 2023 University. All rights reserved.</p>
+</footer>
+</html>

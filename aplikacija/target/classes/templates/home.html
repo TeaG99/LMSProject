@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>University Homepage</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Use min-height instead of height */
+            margin: 0;
+            position: relative; /* Add this to establish a positioning context */
+        }
+
+        .container {
+            text-align: center;
+            flex-grow: 1; /* Allow the container to grow to fill the available space */
+            padding-bottom: 60px;
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        footer {
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%; /* Make the footer full width */
+            position: absolute;
+            bottom: 0;
+        }
+        #book-search {
+            margin-top: 20px;
+        }
+
+        #results-container {
+            margin-top: 10px;
+        }
+
+        #book-results {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Welcome to Our University</h1>
+    </header>
+
+    <section id="student-login">
+        <h2>Student Login</h2>
+        <form th:action="@{/student/login}" th:object="${student}" method="post">
+            <label for="student-email">Email:</label>
+            <input type="text" id="student-email" name="email" required th:field="*{email}"> <!-- Match field name and use th:field -->
+
+            <label for="student-password">Password:</label>
+            <input type="password" id="student-password" name="password" required th:field="*{password}"> <!-- Match field name and use th:field -->
+
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section id="professor-login">
+        <h2>Professor Login</h2>
+        <form th:action="@{/professor/login}" th:object="${professor}" method="post">
+            <label for="professor-email">Email:</label>
+            <input type="text" id="professor-email" name="email" required th:field="*{email}"> <!-- Match field name and use th:field -->
+
+            <label for="professor-password">Password:</label>
+            <input type="password" id="professor-password" name="password" required th:field="*{password}"> <!-- Match field name and use th:field -->
+
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section id="university-info">
+        <h2>About Our University</h2>
+        <p>Our university is dedicated to providing high-quality education and research opportunities to students and faculty.</p>
+    </section>
+    <section id="book-search" style="margin-top: 20px;">
+        <h2>Search Books</h2>
+        <input type="text" id="search-query" placeholder="Enter book title or author">
+        <button onclick="searchBooks()">Search</button>
+    </section>
+
+    <!-- Book Results Section -->
+    <section id="book-results" style="margin-top: 10px;">
+        <h2>Search Results</h2>
+        <div id="results-container"></div>
+    </section>
+</div>
+
+
+<footer>
+    <p>&copy; 2023 University. All rights reserved.</p>
+</footer>
+<script>
+    function searchBooks() {
+        const query = document.getElementById('search-query').value.trim();
+
+        if (query === '') {
+            alert('Please enter a search query');
+            return;
+        }
+
+        fetch(`/search?query=${encodeURIComponent(query)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => displaySearchResults(data))
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        const bookResultsSection = document.getElementById('book-results');
+        bookResultsSection.style.display = 'block'; // Show the book results section
+
+    }
+
+    function displaySearchResults(data) {
+        const resultsContainer = document.getElementById('results-container');
+        resultsContainer.innerHTML = ''; // Clear previous results
+
+        if (data && data.items && data.items.length > 0) {
+            data.items.forEach(item => {
+                const title = item.volumeInfo.title;
+                const authors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
+                const description = item.volumeInfo.description ? item.volumeInfo.description : 'No description available';
+
+                const resultItem = document.createElement('div');
+                resultItem.classList.add('book-item');
+                resultItem.innerHTML = `
+                    <h3>${title}</h3>
+                    <p><strong>Authors:</strong> ${authors}</p>
+                    <p><strong>Description:</strong> ${description}</p>
+                    <hr>
+                `;
+                resultsContainer.appendChild(resultItem);
+            });
+        } else {
+            resultsContainer.innerHTML = '<p>No results found</p>';
+        }
+        const bookResultsSection = document.getElementById('book-results');
+        bookResultsSection.style.display = data && data.items && data.items.length > 0 ? 'block' : 'none';
+
+    }
+</script>
+</body>
+</html>
+

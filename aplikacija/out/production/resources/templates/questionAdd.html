@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Question to Exam</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        form {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+        .back-button {
+            margin-top: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Add Question to Exam</h1>
+
+    <form th:action="@{/professor/addQuestion}" method="post" th:object="${question}">
+        <label for="questionText">Question Text:</label>
+        <input type="text" id="questionText" name="text" th:field="*{text}" required><br>
+
+        <label for="answer">Answer:</label>
+        <input type="text" id="answer" name="answer" th:field="*{answer}" required><br>
+
+        <label for="examId">Exam id:</label>
+        <input type="text" id="examId" name="examId" th:field="*{exam.id}" required><br>
+
+        <button type="submit">Add Question to Exam</button>
+    </form>
+    <a href="http://localhost:8080/professor/login" class="back-button">Back</a>
+</div>
+
+<footer>
+    <p>&copy; 2023 University. All rights reserved.</p>
+</footer>
+</body>
+</html>
